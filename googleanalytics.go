@@ -16,11 +16,21 @@ const analyticsURL = "https://www.google-analytics.com/collect"
 func pushSingleEvent(eventName, eventValue string) {
 	// uid, err := getAnonymousID()
 	queryParams := url.Values{
-		"v":   []string{"1"},                                    // Version of Measurement protocol
-		"tid": []string{trackCode},                              // a constant
-		"t":   []string{eventName},                              // Hit Type, eg. install, volume_create
-		"dp":  []string{eventValue},                             // Value of the custom event
-		"ds":  []string{"m-apiserver"},                          // Data-source
+		"v": []string{"1"}, // Version of Measurement protocol. default = 1
+		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#tid
+		"tid": []string{trackCode}, // constant code for tracking users for an application
+
+		// hit type: any of
+		// 'pageview', 'screenview', 'event', 'transaction', 'item', 'social', 'exception', 'timing'
+		"t": []string{eventName}, // Hit Type, eg. install, volume_create
+
+		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#dp
+		"dp": []string{eventValue}, // Value of the custom eventA
+
+		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ds
+		"ds": []string{"m-apiserver"}, // Data-source
+
+		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
 		"cid": []string{"7c004a96-de84-11e8-9f32-f2801f1b9fd1"}, // uuid-version-1
 	}
 
