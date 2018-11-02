@@ -43,40 +43,8 @@ func pushSingleEvent(eventName, eventValue string) {
 	}
 }
 
-func pushCustomEvent(mKey, mValue string) {
-	queryParams := url.Values{
-		"v": []string{"1"}, // Version of Measurement protocol. default = 1
-		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#tid
-		"tid": []string{trackCode}, // constant code for tracking users for an application
-
-		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
-		"cid": []string{uuid}, // uuid-version-1
-
-		// key -> value
-		mKey: []string{mValue},
-	}
-	_, err := http.PostForm(analyticsURL, queryParams)
-	if err != nil {
-		glog.Errorf(err.Error())
-	} else {
-		// TODO: Remove before merging code?
-		glog.Infof("Sent request to GA")
-	}
-
-}
-
 func main() {
 	// Installation HIT, mocked by a page-view
 	pushSingleEvent("pageview", "/openebs/installed")
 
-	// Event HITS mocked by up to 20 events
-	x := map[string]string{
-		"cm1": "100",  // We can create 20 custom metrics in Google Analytics
-		"cm2": "1000", // number of cstor volumes
-		"cm3": "99",
-	}
-
-	for eventName, eventValue := range x {
-		pushCustomEvent(eventName, eventValue)
-	}
 }
