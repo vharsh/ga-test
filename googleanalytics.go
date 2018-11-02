@@ -8,13 +8,15 @@ import (
 )
 
 // TODO: Should this be passed as build flags?
-var trackCode = "UA-127388617-1"
+var (
+	trackCode = "UA-127388617-1"
+	uuid      = "7c004a96-de84-11e8-9f32-f2801f1b9fd1"
+)
 
 const analyticsURL = "https://www.google-analytics.com/collect"
 
-// PushSingleEvent sends a single event in a POST request to OpenEBS core-developers
+// PushSingleEvent sends a single event in a POST request
 func pushSingleEvent(eventName, eventValue string) {
-	// uid, err := getAnonymousID()
 	queryParams := url.Values{
 		"v": []string{"1"}, // Version of Measurement protocol. default = 1
 		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#tid
@@ -31,15 +33,13 @@ func pushSingleEvent(eventName, eventValue string) {
 		"ds": []string{"m-apiserver"}, // Data-source
 
 		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
-		"cid": []string{"7c004a96-de84-11e8-9f32-f2801f1b9fd1"}, // uuid-version-1
+		"cid": []string{uuid}, // uuid-version-1
 	}
 
 	_, err := http.PostForm(analyticsURL, queryParams)
 	if err != nil {
 		glog.Errorf(err.Error())
 	} else {
-		// TODO: Remove before merging code?
-		glog.Infof("Sent request to GA")
 	}
 }
 
@@ -50,7 +50,7 @@ func pushCustomEvent(mKey, mValue string) {
 		"tid": []string{trackCode}, // constant code for tracking users for an application
 
 		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
-		"cid": []string{"7c004a96-de84-11e8-9f32-f2801f1b9fd1"}, // uuid-version-1
+		"cid": []string{uuid}, // uuid-version-1
 
 		// key -> value
 		mKey: []string{mValue},
