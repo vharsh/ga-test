@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -36,15 +37,26 @@ func pushSingleEvent(eventName, eventValue string) {
 		"cid": []string{uuid}, // uuid-version-1
 	}
 
-	_, err := http.PostForm(analyticsURL, queryParams)
+	resp, err := http.PostForm(analyticsURL, queryParams)
 	if err != nil {
 		glog.Errorf(err.Error())
 	} else {
+		out, _ := ioutil.ReadAll(resp.Body)
+		glog.Infof(string(out))
 	}
 }
 
 func main() {
 	// Installation HIT, mocked by a page-view
-	pushSingleEvent("pageview", "/openebs/installed")
-
+	x := []string{"/" + uuid + "/1.0.0/cstore2/1.0.0/create",
+		"/" + uuid + "/1.0.0/cstor/1.0.0/create",
+		"/" + uuid + "/1.0.0/cstore2/1.0.0/delete",
+		"/" + uuid + "/0.6.0/cstore2/1.0.0/create",
+		"/" + uuid + "/1.0.0/cstore2/1.0.0/create",
+		"/" + uuid + "/0.8.0/cstore2/1.0.0/create",
+		"/" + uuid + "/0.9.0/cstore2/1.0.0/create",
+	}
+	for _, i := range x {
+		pushSingleEvent("pageview", i)
+	}
 }
