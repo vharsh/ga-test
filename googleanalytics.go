@@ -77,9 +77,9 @@ func pushCustomEvent(mKey, mValue string) {
 func main() {
 	// Event HITS. Custom definitions.
 	x := map[string]string{
-		"cm1": "100",  // We can create 20 custom metrics in Google Analytics
-		"cm2": "1000", // number of cstor volumes
-		"cm3": "99",
+		"cm1": "1", // We can create 20 custom metrics in Google Analytics
+		"cm2": "1", // number of cstor volumes
+		"cm3": "9",
 	}
 
 	for eventName, eventValue := range x {
