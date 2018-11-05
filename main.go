@@ -8,15 +8,14 @@ import (
 func main() {
 	// Installation HIT, mocked by a page-view
 	glog.Infof("using uuid: %s", ga.UUID)
-	x := []string{"/" + ga.UUID + "/1.0.0/cstore2/1.0.0/create",
-		"/" + ga.UUID + "/1.0.0/cstor/1.0.0/create",
-		"/" + ga.UUID + "/1.0.0/cstore2/1.0.0/delete",
-		"/" + ga.UUID + "/0.6.0/cstore2/1.0.0/create",
-		"/" + ga.UUID + "/1.0.0/cstore2/1.0.0/create",
-		"/" + ga.UUID + "/0.8.0/cstore2/1.0.0/create",
-		"/" + ga.UUID + "/0.9.0/cstore2/1.0.0/create",
+	x := []string{
+		"/" + ga.UUID + "/install/v1.8/0.7.0/linux/gke",
+		"/" + ga.UUID + "/vc/cstor/0.7.0",
+		"/" + ga.UUID + "/vc/jiva/0.5.0",
+		"/" + ga.UUID + "/vd/jiva/0.5.0",
+		"/" + ga.UUID + "/vd/cstor/0.7.0",
 	}
 	for _, i := range x {
-		ga.PushSingleEvent("pageview", i)
+		ga.PushSingleEvent("", "pageview", i)
 	}
 }
