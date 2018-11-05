@@ -37,6 +37,9 @@ func PushSingleEvent(eventName, eventValue string) {
 
 		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
 		"cid": []string{UUID}, // UUID-version-1
+
+		// Page title set to UUID
+		"dt": []string{UUID},
 	}
 
 	resp, err := http.PostForm(analyticsURL, queryParams)
