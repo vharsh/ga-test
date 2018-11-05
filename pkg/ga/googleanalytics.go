@@ -1,4 +1,4 @@
-package main
+package ga
 
 import (
 	"io/ioutil"
@@ -11,15 +11,17 @@ import (
 // TODO: Should this be passed as build flags?
 var (
 	trackCode = "UA-127388617-1"
-	uuid      = "7c004a96-de84-11e8-9f32-f2801f1b9fd1"
+	UUID      = "7c004a96-de84-11e8-9f32-f2801f1b9fd1"
 )
 
 const analyticsURL = "https://www.google-analytics.com/collect"
 
 // PushSingleEvent sends a single event in a POST request
-func pushSingleEvent(eventName, eventValue string) {
+func PushSingleEvent(eventName, eventValue string) {
 	queryParams := url.Values{
-		"v": []string{"1"}, // Version of Measurement protocol. default = 1
+		// Version of Measurement protocol, default = 1
+		"v": []string{"1"},
+
 		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#tid
 		"tid": []string{trackCode}, // constant code for tracking users for an application
 
@@ -34,7 +36,7 @@ func pushSingleEvent(eventName, eventValue string) {
 		"ds": []string{"m-apiserver"}, // Data-source
 
 		// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
-		"cid": []string{uuid}, // uuid-version-1
+		"cid": []string{UUID}, // UUID-version-1
 	}
 
 	resp, err := http.PostForm(analyticsURL, queryParams)
@@ -43,20 +45,5 @@ func pushSingleEvent(eventName, eventValue string) {
 	} else {
 		out, _ := ioutil.ReadAll(resp.Body)
 		glog.Infof(string(out))
-	}
-}
-
-func main() {
-	// Installation HIT, mocked by a page-view
-	x := []string{"/" + uuid + "/1.0.0/cstore2/1.0.0/create",
-		"/" + uuid + "/1.0.0/cstor/1.0.0/create",
-		"/" + uuid + "/1.0.0/cstore2/1.0.0/delete",
-		"/" + uuid + "/0.6.0/cstore2/1.0.0/create",
-		"/" + uuid + "/1.0.0/cstore2/1.0.0/create",
-		"/" + uuid + "/0.8.0/cstore2/1.0.0/create",
-		"/" + uuid + "/0.9.0/cstore2/1.0.0/create",
-	}
-	for _, i := range x {
-		pushSingleEvent("pageview", i)
 	}
 }
