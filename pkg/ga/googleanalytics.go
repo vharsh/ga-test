@@ -17,7 +17,7 @@ var (
 const analyticsURL = "https://www.google-analytics.com/collect"
 
 // PushSingleEvent sends a single event in a POST request
-func PushSingleEvent(eventCategory, eventName, eventValue string) {
+func PushSingleEvent(eventCategory, eventAction, eventName, eventValue string) {
 	queryParams := url.Values{
 		// Version of Measurement protocol, default = 1
 		"v": []string{"1"},
@@ -46,6 +46,7 @@ func PushSingleEvent(eventCategory, eventName, eventValue string) {
 
 	if eventCategory != "" {
 		queryParams.Set("ec", eventCategory)
+		queryParams.Set("ea", eventAction)
 	}
 
 	resp, err := http.PostForm(analyticsURL, queryParams)
